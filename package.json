@@ -1,0 +1,37 @@
+{
+  "name": "lw-liza-server",
+  "version": "1.0.0",
+  "description": "simple CRUD api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.js --exec babel-node",
+    "build": "babel src -d dist",
+    "postinstall": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paburitel/lw-liza-server.git"
+  },
+  "author": "Nikolai Maligin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Paburitel/lw-liza-server/issues"
+  },
+  "homepage": "https://github.com/Paburitel/lw-liza-server#readme",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.13.2",
+    "simple-node-logger": "^0.93.33"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "nodemon": "^1.18.9"
+  }
+}

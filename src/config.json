@@ -1,0 +1,8 @@
+{
+  "production": {
+    "connectionString": "mongodb://LIza:Liza123Liza@ds147946.mlab.com:47946/lw-liza-server"
+  },
+  "development": {
+    "connectionString": "mongodb://LIza:Liza123Liza@ds147946.mlab.com:47946/lw-liza-server"
+  }
+}
