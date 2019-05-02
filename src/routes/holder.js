@@ -1,17 +1,17 @@
-import  { Smartphone } from '../schemas/index-schema';
+import  { Holder } from '../schemas/holder-schema';
 import Logger from '../utils/logger';
 
 export default (app) => {
-    app.get('/v0/smartphones', (req, res) => {
-        return Smartphone.find({}, (err, smartphones) => {
-            if(!smartphones) {
+    app.get('/v0/holders', (req, res) => {
+        return Holder.find({}, (err, holder) => {
+            if(!holder) {
                 res.statusCode = 404;
-                Logger.notify('no  smartphones');
+                Logger.notify('no  holders');
                 return res.send({ error: 'Not found' });
             };
             if (!err) {
-                Logger.notify('send smartphones');
-                return res.send({ status: 'OK', data: smartphones });
+                Logger.notify('send holders');
+                return res.send({ status: 'OK', data: holder });
             } else {
                 res.statusCode = 500;
                 Logger.notify('Internal error(%d): %s', res.statusCode, err.message);
@@ -20,19 +20,15 @@ export default (app) => {
         });
     });
 
-    app.post('/v0/smartphones', (req, res) => {
-        const {name, manufacturer, price, amount, operatingSystem} = req.body;
-        const smartphone = new Smartphone({
-            name,
-            manufacturer,
-            price,
-            amount,
-            operatingSystem,
+    app.post('/v0/holders', (req, res) => {
+        const {name, useModel, price, amount, description, useManufacturer} = req.body;
+        const holder = new Holder({
+            name, useModel, price, amount, description, useManufacturer
         });
-        return smartphone.save((err) => {
+        return holder.save((err) => {
             if (!err) {
-                Logger.notify('Smartphone created');
-                return res.send({ status: 'OK', data: smartphone });
+                Logger.notify('Holder created');
+                return res.send({ status: 'OK', data: holder });
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400;
@@ -46,18 +42,18 @@ export default (app) => {
         });
     });
 
-    app.put('/V0/smartphones/:id', (req, res) => {
-        return Smartphone.findById(req.params.id, (err, smartphone) => {
-            if(!smartphone) {
+    app.put('/V0/holders/:id', (req, res) => {
+        return Holder.findById(req.params.id, (err, holder) => {
+            if(!holder) {
                 res.statusCode = 404;
                 return res.send({ error: 'Not found' });
             }
 
-            Object.assign(smartphone, req.body);
-            return smartphone.save((err) => {
+            Object.assign(holder, req.body);
+            return holder.save((err) => {
                 if (!err) {
-                    Logger.notify("smartphone updated");
-                    return res.send({ status: 'OK', data: smartphone });
+                    Logger.notify("holder updated");
+                    return res.send({ status: 'OK', data: holder });
                 } else {
                     if( err.name === 'ValidationError' ) {
                         res.statusCode = 400;
@@ -72,15 +68,15 @@ export default (app) => {
         });
     });
 
-    app.delete('/V0/smartphones/:id', (req, res) => {
-        return Smartphone.findById(req.params.id, (err, smartphone) => {
-            if(!smartphone) {
+    app.delete('/V0/holders/:id', (req, res) => {
+        return Holder.findById(req.params.id, (err, holder) => {
+            if(!holder) {
                 res.statusCode = 404;
                 return res.send({ error: 'Not found' });
             }
-            return smartphone.remove((err) => {
+            return holder.remove((err) => {
                 if (!err) {
-                    Logger.notify("smartphone removed");
+                    Logger.notify("holder removed");
                     return res.send({ status: 'OK' });
                 } else {
                     res.statusCode = 500;
