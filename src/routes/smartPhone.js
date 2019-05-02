@@ -21,13 +21,14 @@ export default (app) => {
     });
 
     app.post('/v0/smartphones', (req, res) => {
-        const {name, manufacturer, price, amount, operatingSystem} = req.body;
+        const {name, manufacturer, price, amount, operatingSystem, model} = req.body;
         const smartphone = new Smartphone({
             name,
             manufacturer,
             price,
             amount,
             operatingSystem,
+            model
         });
         return smartphone.save((err) => {
             if (!err) {

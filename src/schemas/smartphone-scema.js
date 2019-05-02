@@ -1,5 +1,4 @@
 import mongoose  from 'mongoose';
-
 const Schema = mongoose.Schema;
 const SmartphoneSchema = new Schema({
     name: {
@@ -8,8 +7,14 @@ const SmartphoneSchema = new Schema({
         required: true
     },
     manufacturer: {
-        type: String,
-        required: true
+        type: mongoose.Schema.ObjectId,
+        ref: "Brand",
+        autopopulate: true
+    },
+    model: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Model",
+        autopopulate: true
     },
     price: {
         type: Number,
