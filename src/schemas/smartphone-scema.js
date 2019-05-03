@@ -10,6 +10,7 @@ const SmartphoneSchema = new Schema({
     model: {
         type: mongoose.Schema.ObjectId,
         ref: "Model",
+        unique: true
         // autopopulate: true
     },
     price: {

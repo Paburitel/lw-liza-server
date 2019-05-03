@@ -3,20 +3,23 @@ import Logger from '../utils/logger';
 
 export default (app) => {
     app.get('/v0/smartphones', (req, res) => {
-        return Smartphone.find({}, (err, phones) => {
-            if(!phones) {
-                res.statusCode = 404;
-                Logger.notify('no  smartphones!');
-                return res.send({ error: 'Not found!' });
-            }
-            if (!err) {
-                Logger.notify('send smartphones');
-                return res.send({ status: 'OK', data: phones });
-            } else {
-                res.statusCode = 500;
-                Logger.notify('Internal error(%d): %s', res.statusCode, err.message);
-                return res.send({ error: 'Server error' });
-            }
+        return Smartphone.find({})
+            .populate('model')
+            .populate('brand')
+            .exec((err, phones) => {
+                if(!phones) {
+                    res.statusCode = 404;
+                    Logger.notify('no  smartphones!');
+                    return res.send({ error: 'Not found!' });
+                }
+                if (!err) {
+                    Logger.notify('send smartphones');
+                    return res.send({ status: 'OK', data: phones });
+                } else {
+                    res.statusCode = 500;
+                    Logger.notify('!!Internal error(%d): %s', res.statusCode, err.message);
+                    return res.send({ error: 'Server error' });
+                }
         });
     });
 
@@ -40,6 +43,7 @@ export default (app) => {
 
     app.post('/v0/smartphones', (req, res) => {
         const { brand, price, amount, operatingSystem, model} = req.body;
+        console.log(brand, price, amount, operatingSystem, model);
         const smartphone = new Smartphone({
             brand,
             price,
@@ -48,6 +52,7 @@ export default (app) => {
             model
         });
         return smartphone.save((err) => {
+            console.log(err);
             if (!err) {
                 Logger.notify('Smartphone created');
                 return res.send({ status: 'OK', data: smartphone });
