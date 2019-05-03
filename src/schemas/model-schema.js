@@ -10,8 +10,12 @@ const ModelSchema = new Schema({
     brand:
         {
             type: Schema.Types.ObjectId,
-            ref: 'Brand'}
+            ref: 'Brand',
+            // autopopulate: true
+        }
 });
+
+ModelSchema.plugin(require('mongoose-autopopulate'));
 
 const Model  = mongoose.model('Model', ModelSchema);
 
