@@ -1,15 +1,17 @@
 import mongoose  from 'mongoose';
-
 const Schema = mongoose.Schema;
+
 const SmartphoneSchema = new Schema({
-    name: {
-        type: String,
-        unique: true,
-        required: true
+    brand: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Brand",
+        // autopopulate: true
     },
-    manufacturer: {
-        type: String,
-        required: true
+    model: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Model",
+        unique: true
+        // autopopulate: true
     },
     price: {
         type: Number,
@@ -24,6 +26,8 @@ const SmartphoneSchema = new Schema({
         required: true
     }
 });
+
+SmartphoneSchema.plugin(require('mongoose-autopopulate'));
 
 const Smartphone  = mongoose.model('Smartphone', SmartphoneSchema);
 

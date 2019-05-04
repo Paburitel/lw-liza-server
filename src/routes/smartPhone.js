@@ -3,15 +3,36 @@ import Logger from '../utils/logger';
 
 export default (app) => {
     app.get('/v0/smartphones', (req, res) => {
-        return Smartphone.find({}, (err, smartphones) => {
-            if(!smartphones) {
+        return Smartphone.find({})
+            .populate('model')
+            .populate('brand')
+            .exec((err, phones) => {
+                if(!phones) {
+                    res.statusCode = 404;
+                    Logger.notify('no  smartphones!');
+                    return res.send({ error: 'Not found!' });
+                }
+                if (!err) {
+                    Logger.notify('send smartphones');
+                    return res.send({ status: 'OK', data: phones });
+                } else {
+                    res.statusCode = 500;
+                    Logger.notify('!!Internal error(%d): %s', res.statusCode, err.message);
+                    return res.send({ error: 'Server error' });
+                }
+        });
+    });
+
+    app.get('/v0/smartphones/:id', (req, res) => {
+        return Smartphone.findById(req.params.id, (err, smartphone) => {
+            if(!smartphone) {
                 res.statusCode = 404;
-                Logger.notify('no  smartphones');
+                Logger.notify('no  smartphone');
                 return res.send({ error: 'Not found' });
             };
             if (!err) {
-                Logger.notify('send smartphones');
-                return res.send({ status: 'OK', data: smartphones });
+                Logger.notify('send smartphone');
+                return res.send({ status: 'OK', data: smartphone });
             } else {
                 res.statusCode = 500;
                 Logger.notify('Internal error(%d): %s', res.statusCode, err.message);
@@ -21,15 +42,17 @@ export default (app) => {
     });
 
     app.post('/v0/smartphones', (req, res) => {
-        const {name, manufacturer, price, amount, operatingSystem} = req.body;
+        const { brand, price, amount, operatingSystem, model} = req.body;
+        console.log(brand, price, amount, operatingSystem, model);
         const smartphone = new Smartphone({
-            name,
-            manufacturer,
+            brand,
             price,
             amount,
             operatingSystem,
+            model
         });
         return smartphone.save((err) => {
+            console.log(err);
             if (!err) {
                 Logger.notify('Smartphone created');
                 return res.send({ status: 'OK', data: smartphone });
