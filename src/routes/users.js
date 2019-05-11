@@ -3,7 +3,6 @@ import Logger from '../utils/logger';
 
 export default (app) => {
     app.post('/v0/user/reg', (req, res) => {
-        console.log(req.body);
         const {email, fistName, lastName, roles, password} = req.body;
         const newUser = new User({email, fistName, lastName, roles, password});
         newUser.save((err, user) => {
@@ -20,7 +19,6 @@ export default (app) => {
 
     app.post('/v0/user/login', (req, res) => {
         const {email, password} = req.body;
-        console.log(email);
         User.findOne({email}, (err, user) => {
             if(!user) {
                 res.statusCode = 404;

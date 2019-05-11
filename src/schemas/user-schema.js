@@ -29,7 +29,7 @@ const UserSchema = new Schema({
         default: Date.now
     }
 });
-// may the force be with you
+
 UserSchema.methods.encryptPassword = function (password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
@@ -41,7 +41,6 @@ UserSchema.virtual('password')
         this.hashedPassword = this.encryptPassword(password);
     })
     .get(function (){ return this.hashedPassword; });
-
 
 UserSchema.methods.checkPassword = function (password){
     return this.encryptPassword(password) === this.hashedPassword;
