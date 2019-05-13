@@ -43,7 +43,6 @@ export default (app) => {
 
     app.post('/v0/smartphones', (req, res) => {
         const { brand, price, amount, operatingSystem, model} = req.body;
-        console.log(brand, price, amount, operatingSystem, model);
         const smartphone = new Smartphone({
             brand,
             price,
