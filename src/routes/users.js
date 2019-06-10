@@ -59,6 +59,28 @@ export default (app) => {
         });
     });
 
+    app.get('/v0/users', (req, res) => {
+        return User.find({}, (err, users) => {
+            if(!users) {
+                res.statusCode = 404;
+                Logger.notify('no  users');
+                return res.send({ error: 'Users not found' });
+            }
+            if (!err) {
+                Logger.notify('send users');
+                const modifiedUsers = users.map((user)=>{
+                    const {_id, email, fistName, lastName, roles} = user;
+                    return {_id, email, fistName, lastName, roles};
+                });
+                return res.send({ status: 'OK', data:modifiedUsers  });
+            } else {
+                res.statusCode = 500;
+                Logger.notify('Internal error(%d): %s', res.statusCode, err.message);
+                return res.send({ error: 'Server error' });
+            }
+        });
+    });
+
     app.get('/v0/userSalt', (req, res) => {
         Logger.notify('send salt');
         return res.send({ status: 'OK', data: 'may the force be with you' });
