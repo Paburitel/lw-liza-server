@@ -24,7 +24,7 @@
     "bluebird": "^3.5.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "mongoose": "^4.13.2",
+    "mongoose": "^5.10.0",
     "mongoose-autopopulate": "^0.9.1",
     "simple-node-logger": "^0.93.33"
   },
